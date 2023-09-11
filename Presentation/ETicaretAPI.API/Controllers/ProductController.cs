@@ -1,4 +1,5 @@
 ﻿using ETicaretAPI.Application.Repositories;
+using ETicaretAPI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,26 +12,37 @@ namespace ETicaretAPI.API.Controllers
         private readonly IProductWriteRepository _productWriteRepository;
         private readonly IProductReadRepository _productReadRepository;
 
-        public ProductController(IProductWriteRepository productWriteRepository)
+        public ProductController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository)
         {
             _productWriteRepository = productWriteRepository;
+            _productReadRepository = productReadRepository;
         }
 
 
         [HttpGet]
-        public async void Get()
+        public async Task Get()
         {
-           await _productWriteRepository.AddRangeAsync(new()
+            await _productWriteRepository.AddRangeAsync(new()
             {
                 new() {Id = Guid.NewGuid() , Name = "Product 1" , Price = 100 , CreatedDate = DateTime.UtcNow, Stock  = 10},
                 new() {Id = Guid.NewGuid() , Name = "Product 2" , Price = 200 , CreatedDate = DateTime.UtcNow, Stock  = 20},
                 new() {Id = Guid.NewGuid() , Name = "Product 3" , Price = 300 , CreatedDate = DateTime.UtcNow, Stock  = 30},
                 new() {Id = Guid.NewGuid() , Name = "Product 4" , Price = 400 , CreatedDate = DateTime.UtcNow, Stock  = 40},
                 new() {Id = Guid.NewGuid() , Name = "Product 5" , Price = 500 , CreatedDate = DateTime.UtcNow, Stock  = 50}
-                
-             
+
+
             });
             var count = await _productWriteRepository.SaveAsync();
         }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            Product product = await _productReadRepository.GetByIdAsync(id);
+            return Ok(product);
+        }
+
+
     }
 }

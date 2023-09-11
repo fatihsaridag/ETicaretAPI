@@ -28,8 +28,10 @@ namespace ETicaretAPI.Persistence.Repositories
         public IQueryable<TEntity> GetWhere(Expression<Func<TEntity, bool>> method) => Table.Where(method);
 
         public async Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> method) => await Table.FirstOrDefaultAsync(method);
-   
-        public Task<TEntity> GetByIdAsync(string id) => Table.FirstOrDefaultAsync(data => data.Id == Guid.Parse(id));
+
+        public async Task<TEntity> GetByIdAsync(string id)
+            //=> Table.FirstOrDefaultAsync(data => data.Id == Guid.Parse(id));
+            => await Table.FindAsync(Guid.Parse(id));
         
 
     }
