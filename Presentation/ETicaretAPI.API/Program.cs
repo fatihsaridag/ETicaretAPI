@@ -11,6 +11,11 @@ namespace ETicaretAPI.API
             // Add services to the container.
 
             builder.Services.AddPersistenceServices();
+            builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>          //Cors politikasýný belirledik 
+            
+                policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod()
+            ));
+                                                                                            
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer(); 
             builder.Services.AddSwaggerGen();
@@ -26,6 +31,8 @@ namespace ETicaretAPI.API
                 app.UseSwaggerUI();
             }
 
+                
+            app.UseCors();                                                      //Cors Middlewareini çaðýrdýk.
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
