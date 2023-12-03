@@ -55,6 +55,7 @@ namespace ETicaretAPI.Persistence.Repositories
             return true;
         }
 
+        //Buradaki update metoduna ihtiyacımız olmasının sebebi eğer ki ilgil veri context üzerinden gelmiyorsa yani ilgili veri tracking edilmiyorsa elimizde bir Id varsa bu id ye karşılık veriyi track etmesek de güncelle dersek update fonksiyonunu kullanabiliriz.
         public bool Update(TEntity model)
         {
             EntityEntry entityEntry = Table.Update(model);
